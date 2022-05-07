@@ -1,4 +1,4 @@
-# Valorant API - API Wrapper
+# Valorant API - Riot API
 
 - *Report Bug*
   - [Discord](https://discord.gg/pbyWbUYjyt)
@@ -13,4 +13,4 @@
 - *Legal*
   - >**@val-api** isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
   - **@val-api** was created under [Riot Games' "Legal Jibber Jabber"](https://www.riotgames.com/en/legal)
-  - [MIT License](https://github.com/Ing-Valorant-API/API-Wrapper/blob/main/LICENSE)
+  - [MIT License](https://github.com/Ing-Valorant-API/Riot-API/blob/main/LICENSE)
