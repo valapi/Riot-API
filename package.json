@@ -1,5 +1,5 @@
 {
-  "name": "@val-api/riot-api",
+  "name": "@valapi/riot-api",
   "version": "1.0.0",
   "description": "Valorant API - Riot API",
   "main": "dist/index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Ing-Valorant-API/Riot-API.git"
+    "url": "git://git@github.com/valapi/Riot-API.git"
   },
   "keywords": [
     "valorant",
     "riot",
     "node",
     "api",
-    "val-api",
+    "valapi",
     "val",
     "mfa",
     "2fa",
@@ -39,9 +39,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ing-Valorant-API/Riot-API/issues"
+    "url": "https://github.com/valapi/Riot-API/issues"
   },
-  "homepage": "https://github.com/Ing-Valorant-API/Riot-API#readme",
+  "homepage": "https://github.com/valapi/Riot-API#readme",
   "dependencies": {
     "axios": "^0.27.2"
   },
