@@ -1,6 +1,12 @@
 import { AxiosClient, type RiotAPIAxios } from "../client/AxiosClient";
 import type { ValorantAPIRegion } from "@valapi/lib";
-declare type AccountV1_ByGame_Game = 'val' | 'lor';
+interface RiotAPIServiceAccount {
+    puuid: string;
+    gameName: string;
+    tagLine: string;
+    [key: string]: any;
+}
+declare type RiotAPIServiceAccountGameList = 'val' | 'lor';
 declare class AccountV1 {
     private apiKey;
     private region;
@@ -18,20 +24,21 @@ declare class AccountV1 {
      * @param {String} tagLine In-Game Tag
      * @returns {Promise<RiotAPIAxios>}
      */
-    ByRiotId(gameName: string, tagLine: string): Promise<RiotAPIAxios<any>>;
+    ByRiotId(gameName: string, tagLine: string): Promise<RiotAPIAxios<RiotAPIServiceAccount>>;
     /**
      *
      * @param {String} puuid Player UUID
      * @returns {Promise<RiotAPIAxios>}
      */
-    ByPuuid(puuid: string): Promise<RiotAPIAxios<any>>;
+    ByPuuid(puuid: string): Promise<RiotAPIAxios<RiotAPIServiceAccount>>;
     /**
      *
      * @param {String} puuid Player UUID
      * @param {String} game Game
      * @returns {Promise<RiotAPIAxios>}
      */
-    ByGame(puuid: string, game?: AccountV1_ByGame_Game): Promise<RiotAPIAxios<any>>;
+    ByGame(puuid: string, game?: RiotAPIServiceAccountGameList): Promise<RiotAPIAxios<any>>;
 }
-export { AccountV1, type AccountV1_ByGame_Game };
+export { AccountV1 };
+export type { RiotAPIServiceAccount, RiotAPIServiceAccountGameList };
 //# sourceMappingURL=AccountV1.d.ts.map

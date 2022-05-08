@@ -1,11 +1,22 @@
 //import
+
 import { AxiosClient, type RiotAPIAxios } from "../client/AxiosClient";
 
 import type { ValorantAPIRegion } from "@valapi/lib";
 
-//class
+//interface
 
-type AccountV1_ByGame_Game = 'val' | 'lor';
+interface RiotAPIServiceAccount {
+    puuid:string;
+    gameName:string;
+    tagLine:string;
+
+    [key:string]: any;
+}
+
+type RiotAPIServiceAccountGameList = 'val' | 'lor';
+
+//class
 
 class AccountV1 {
     private apiKey:string;
@@ -31,7 +42,7 @@ class AccountV1 {
      * @param {String} tagLine In-Game Tag
      * @returns {Promise<RiotAPIAxios>}
      */
-     public async ByRiotId(gameName:string, tagLine:string):Promise<RiotAPIAxios<any>> {
+     public async ByRiotId(gameName:string, tagLine:string):Promise<RiotAPIAxios<RiotAPIServiceAccount>> {
         return await this.AxiosClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}` + `?api_key=${this.apiKey}`);
     }
 
@@ -40,7 +51,7 @@ class AccountV1 {
      * @param {String} puuid Player UUID
      * @returns {Promise<RiotAPIAxios>}
      */
-     public async ByPuuid(puuid:string):Promise<RiotAPIAxios<any>> {
+     public async ByPuuid(puuid:string):Promise<RiotAPIAxios<RiotAPIServiceAccount>> {
         return await this.AxiosClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-puuid/${puuid}` + `?api_key=${this.apiKey}`);
     }
 
@@ -50,10 +61,12 @@ class AccountV1 {
      * @param {String} game Game
      * @returns {Promise<RiotAPIAxios>}
      */
-     public async ByGame(puuid:string, game:AccountV1_ByGame_Game = 'val'):Promise<RiotAPIAxios<any>> {
+     public async ByGame(puuid:string, game:RiotAPIServiceAccountGameList = 'val'):Promise<RiotAPIAxios<any>> {
         return await this.AxiosClient.get(this.region.riot.api + `/riot/account/v1/active-shards/by-game/${game}/by-puuid/${puuid}` + `?api_key=${this.apiKey}`);
     }
 }
 
 //export
-export { AccountV1, type AccountV1_ByGame_Game };
+
+export { AccountV1 };
+export type { RiotAPIServiceAccount, RiotAPIServiceAccountGameList };
