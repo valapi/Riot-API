@@ -13,7 +13,7 @@ interface RiotAPILockfile {
 }
 interface RiotAPIConfig {
     apiKey: string;
-    Region: keyof typeof _Region;
+    region: keyof typeof _Region;
     axiosConfig?: AxiosRequestConfig;
 }
 interface RiotAPIError {

@@ -24,7 +24,7 @@ interface RiotAPILockfile {
 
 interface RiotAPIConfig {
     apiKey: string;
-    Region: keyof typeof _Region;
+    region: keyof typeof _Region;
     axiosConfig?: AxiosRequestConfig;
 }
 
@@ -57,9 +57,9 @@ class RiotAPIClient extends CustomEvent {
     constructor(config:RiotAPIConfig) {
         super();
 
-        if(config.Region === 'data'){
-            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: config.Region });
-            config.Region = 'na';
+        if(config.region === 'data'){
+            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: config.region });
+            config.region = 'na';
         }
 
         //config
@@ -72,7 +72,7 @@ class RiotAPIClient extends CustomEvent {
         this.config = config;
 
         //first reload
-        this.RegionServices = new ValRegion(this.config.Region).toJSON();
+        this.RegionServices = new ValRegion(this.config.region).toJSON();
 
         this.AxiosClient = new AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data:RiotAPIAxiosError) => { this.emit('error', data) }));
@@ -89,7 +89,7 @@ class RiotAPIClient extends CustomEvent {
      * @returns {void}
      */
     private reload():void {
-        this.RegionServices = new ValRegion(this.config.Region).toJSON();
+        this.RegionServices = new ValRegion(this.config.region).toJSON();
 
         this.AxiosClient = new AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data:RiotAPIAxiosError) => { this.emit('error', data) }));
@@ -119,7 +119,7 @@ class RiotAPIClient extends CustomEvent {
      * @returns {void}
      */
      public setRegion(region:keyof typeof _Region = 'na'):void {
-        this.config.Region = region
+        this.config.region = region
 
         if(region === 'data'){
             this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: region });

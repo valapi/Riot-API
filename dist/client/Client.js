@@ -17,9 +17,9 @@ class RiotAPIClient extends lib_1.CustomEvent {
      */
     constructor(config) {
         super();
-        if (config.Region === 'data') {
-            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: config.Region });
-            config.Region = 'na';
+        if (config.region === 'data') {
+            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: config.region });
+            config.region = 'na';
         }
         //config
         this.apiKey = config.apiKey;
@@ -28,7 +28,7 @@ class RiotAPIClient extends lib_1.CustomEvent {
         }
         this.config = config;
         //first reload
-        this.RegionServices = new lib_1.ValRegion(this.config.Region).toJSON();
+        this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
         this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
@@ -41,7 +41,7 @@ class RiotAPIClient extends lib_1.CustomEvent {
      * @returns {void}
      */
     reload() {
-        this.RegionServices = new lib_1.ValRegion(this.config.Region).toJSON();
+        this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
         this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
@@ -65,7 +65,7 @@ class RiotAPIClient extends lib_1.CustomEvent {
      * @returns {void}
      */
     setRegion(region = 'na') {
-        this.config.Region = region;
+        this.config.region = region;
         if (region === 'data') {
             this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: region });
             region = 'na';
