@@ -12,16 +12,6 @@ import { AxiosClient } from "./AxiosClient";
 
 //interface
 
-type RiotAPIProtocol = 'http' | 'https';
-
-interface RiotAPILockfile {
-    name: string;
-    pid: number;
-    port: number;
-    password: string;
-    protocol: RiotAPIProtocol;
-}
-
 interface RiotAPIConfig {
     apiKey: string;
     region: keyof typeof _Region;
@@ -147,4 +137,4 @@ declare interface RiotAPIClient {
 
 //export
 export { RiotAPIClient };
-export type { RiotAPIProtocol, RiotAPILockfile, RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };
+export type { RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };

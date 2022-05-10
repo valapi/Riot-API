@@ -3,14 +3,6 @@ import type { AxiosRequestConfig } from 'axios';
 import { AccountV1 } from '../service/AccountV1';
 import { ContentV1 } from '../service/ContentV1';
 import { StatusV1 } from '../service/StatusV1';
-declare type RiotAPIProtocol = 'http' | 'https';
-interface RiotAPILockfile {
-    name: string;
-    pid: number;
-    port: number;
-    password: string;
-    protocol: RiotAPIProtocol;
-}
 interface RiotAPIConfig {
     apiKey: string;
     region: keyof typeof _Region;
@@ -68,5 +60,5 @@ declare interface RiotAPIClient {
     off<EventName extends keyof RiotAPIClientEvent>(name: EventName, callback?: RiotAPIClientEvent[EventName]): void;
 }
 export { RiotAPIClient };
-export type { RiotAPIProtocol, RiotAPILockfile, RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };
+export type { RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };
 //# sourceMappingURL=Client.d.ts.map
