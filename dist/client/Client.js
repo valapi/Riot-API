@@ -23,14 +23,12 @@ class RiotAPIClient extends lib_1.CustomEvent {
         }
         //config
         this.apiKey = config.apiKey;
-        if (!config.axiosConfig) {
-            config.axiosConfig = {};
-        }
         this.config = config;
         //first reload
         this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
         this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
+        this.AxiosClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.ContentV1 = new ContentV1_1.ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.StatusV1 = new StatusV1_1.StatusV1(this.AxiosClient, this.apiKey, this.RegionServices);
@@ -44,9 +42,12 @@ class RiotAPIClient extends lib_1.CustomEvent {
         this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
         this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
         this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
+        this.AxiosClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.ContentV1 = new ContentV1_1.ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.StatusV1 = new StatusV1_1.StatusV1(this.AxiosClient, this.apiKey, this.RegionServices);
+        //event
+        this.emit('ready');
     }
     // SETTINGS //
     /**

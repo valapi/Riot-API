@@ -1,14 +1,13 @@
 //import
-import { CustomEvent, ValRegion, Region as _Region, ValorantAPIRegion } from '@valapi/lib';
+import { CustomEvent, ValRegion, Region as _Region, ValorantAPIRegion, type ValorantAPIError } from '@valapi/lib';
 
 import type { AxiosRequestConfig } from 'axios';
-import type { RiotAPIAxiosError } from './AxiosClient';
 
 import { AccountV1 } from '../service/AccountV1';
 import { ContentV1 } from '../service/ContentV1';
 import { StatusV1 } from '../service/StatusV1';
 
-import { AxiosClient } from "./AxiosClient";
+import { AxiosClient, type RiotAPIAxiosRequest } from "./AxiosClient";
 
 //interface
 
@@ -16,12 +15,6 @@ interface RiotAPIConfig {
     apiKey: string;
     region: keyof typeof _Region;
     axiosConfig?: AxiosRequestConfig;
-}
-
-interface RiotAPIError {
-    errorCode: string,
-    message: string,
-    data: any,
 }
 
 //class
@@ -55,17 +48,14 @@ class RiotAPIClient extends CustomEvent {
         //config
         this.apiKey = config.apiKey;
 
-        if(!config.axiosConfig){
-            config.axiosConfig = {};
-        }
-
         this.config = config;
 
         //first reload
         this.RegionServices = new ValRegion(this.config.region).toJSON();
 
         this.AxiosClient = new AxiosClient(this.config.axiosConfig);
-        this.AxiosClient.on('error', ((data:RiotAPIAxiosError) => { this.emit('error', data) }));
+        this.AxiosClient.on('error', ((data:ValorantAPIError) => { this.emit('error', data) }));
+        this.AxiosClient.on('request', ((data:RiotAPIAxiosRequest) => { this.emit('request', data as RiotAPIAxiosRequest); }));
 
         this.AccountV1 = new AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.ContentV1 = new ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
@@ -82,11 +72,15 @@ class RiotAPIClient extends CustomEvent {
         this.RegionServices = new ValRegion(this.config.region).toJSON();
 
         this.AxiosClient = new AxiosClient(this.config.axiosConfig);
-        this.AxiosClient.on('error', ((data:RiotAPIAxiosError) => { this.emit('error', data) }));
+        this.AxiosClient.on('error', ((data:ValorantAPIError) => { this.emit('error', data) }));
+        this.AxiosClient.on('request', ((data:RiotAPIAxiosRequest) => { this.emit('request', data as RiotAPIAxiosRequest); }));
 
         this.AccountV1 = new AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.ContentV1 = new ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
         this.StatusV1 = new StatusV1(this.AxiosClient, this.apiKey, this.RegionServices);
+
+        //event
+        this.emit('ready');
     }
 
     // SETTINGS //
@@ -124,8 +118,9 @@ class RiotAPIClient extends CustomEvent {
 //event
 interface RiotAPIClientEvent {
     'ready': () => void,
+    'request': (data:RiotAPIAxiosRequest) => void,
     'changeSettings': (data: { name:string, data:any }) => void,
-    'error': (data: RiotAPIError) => void;
+    'error': (data: ValorantAPIError) => void;
 }
 
 declare interface RiotAPIClient {
@@ -137,4 +132,4 @@ declare interface RiotAPIClient {
 
 //export
 export { RiotAPIClient };
-export type { RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };
+export type { RiotAPIConfig, RiotAPIClientEvent };

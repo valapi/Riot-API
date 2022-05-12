@@ -1,4 +1,4 @@
 export { RiotAPIClient as Client } from "./client/Client";
-export type { RiotAPIClientEvent, RiotAPIConfig, RiotAPIError } from "./client/Client";
-export type { RiotAPIAxios, RiotAPIAxiosError, RiotAPIAxiosEvent, RiotAPIAxiosMethod, RiotAPIAxiosRequest } from "./client/AxiosClient";
+export type { RiotAPIClientEvent, RiotAPIConfig } from "./client/Client";
+export type { RiotAPIAxios, RiotAPIAxiosEvent, RiotAPIAxiosMethod, RiotAPIAxiosRequest } from "./client/AxiosClient";
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
 //import
-import { CustomEvent } from "@valapi/lib";
+import { CustomEvent, type ValorantAPIError } from "@valapi/lib";
 
 import axios, { type Axios, type AxiosRequestConfig, type AxiosError } from 'axios';
 
@@ -10,12 +10,6 @@ interface RiotAPIAxios<RiotAPIAxiosReturn> {
 }
 
 type RiotAPIAxiosMethod = 'get' | 'post' | 'put' | 'patch' | 'delete' ;
-
-interface RiotAPIAxiosError {
-    errorCode: string,
-    message: string,
-    data: any,
-}
 
 interface RiotAPIAxiosRequest {
     method: RiotAPIAxiosMethod,
@@ -49,13 +43,11 @@ class AxiosClient extends CustomEvent {
      */
      private errorHandler(error:AxiosError):RiotAPIAxios<any> {
         //event
-        const RequestError:RiotAPIAxiosError = {
+        this.emit('error', {
             errorCode: 'RiotAPI_Request_Error',
             message: error.message,
             data: error,
-        }
-
-        this.emit('error', RequestError)
+        })
 
         //data
         if(error.response && error.response.data){
@@ -273,7 +265,7 @@ class AxiosClient extends CustomEvent {
 interface RiotAPIAxiosEvent {
     'ready': () => void;
     'request': (data: RiotAPIAxiosRequest) => void;
-    'error': (data: RiotAPIAxiosError) => void;
+    'error': (data: ValorantAPIError) => void;
 }
 
 declare interface AxiosClient {
@@ -284,4 +276,4 @@ declare interface AxiosClient {
 
 //export
 export { AxiosClient };
-export type { RiotAPIAxios, RiotAPIAxiosMethod, RiotAPIAxiosError, RiotAPIAxiosRequest, RiotAPIAxiosEvent };
+export type { RiotAPIAxios, RiotAPIAxiosMethod, RiotAPIAxiosRequest, RiotAPIAxiosEvent };

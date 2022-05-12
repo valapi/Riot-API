@@ -1,17 +1,13 @@
-import { CustomEvent, Region as _Region } from '@valapi/lib';
+import { CustomEvent, Region as _Region, type ValorantAPIError } from '@valapi/lib';
 import type { AxiosRequestConfig } from 'axios';
 import { AccountV1 } from '../service/AccountV1';
 import { ContentV1 } from '../service/ContentV1';
 import { StatusV1 } from '../service/StatusV1';
+import { type RiotAPIAxiosRequest } from "./AxiosClient";
 interface RiotAPIConfig {
     apiKey: string;
     region: keyof typeof _Region;
     axiosConfig?: AxiosRequestConfig;
-}
-interface RiotAPIError {
-    errorCode: string;
-    message: string;
-    data: any;
 }
 /**
  * Official Api From Riot Games
@@ -47,11 +43,12 @@ declare class RiotAPIClient extends CustomEvent {
 }
 interface RiotAPIClientEvent {
     'ready': () => void;
+    'request': (data: RiotAPIAxiosRequest) => void;
     'changeSettings': (data: {
         name: string;
         data: any;
     }) => void;
-    'error': (data: RiotAPIError) => void;
+    'error': (data: ValorantAPIError) => void;
 }
 declare interface RiotAPIClient {
     emit<EventName extends keyof RiotAPIClientEvent>(name: EventName, ...args: Parameters<RiotAPIClientEvent[EventName]>): void;
@@ -60,5 +57,5 @@ declare interface RiotAPIClient {
     off<EventName extends keyof RiotAPIClientEvent>(name: EventName, callback?: RiotAPIClientEvent[EventName]): void;
 }
 export { RiotAPIClient };
-export type { RiotAPIConfig, RiotAPIError, RiotAPIClientEvent };
+export type { RiotAPIConfig, RiotAPIClientEvent };
 //# sourceMappingURL=Client.d.ts.map

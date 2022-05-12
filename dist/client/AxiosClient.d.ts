@@ -1,15 +1,10 @@
-import { CustomEvent } from "@valapi/lib";
+import { CustomEvent, type ValorantAPIError } from "@valapi/lib";
 import { type Axios, type AxiosRequestConfig } from 'axios';
 interface RiotAPIAxios<RiotAPIAxiosReturn> {
     isError: boolean;
     data: RiotAPIAxiosReturn;
 }
 declare type RiotAPIAxiosMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
-interface RiotAPIAxiosError {
-    errorCode: string;
-    message: string;
-    data: any;
-}
 interface RiotAPIAxiosRequest {
     method: RiotAPIAxiosMethod;
     url: string;
@@ -65,7 +60,7 @@ declare class AxiosClient extends CustomEvent {
 interface RiotAPIAxiosEvent {
     'ready': () => void;
     'request': (data: RiotAPIAxiosRequest) => void;
-    'error': (data: RiotAPIAxiosError) => void;
+    'error': (data: ValorantAPIError) => void;
 }
 declare interface AxiosClient {
     on<EventName extends keyof RiotAPIAxiosEvent>(name: EventName, callback: RiotAPIAxiosEvent[EventName]): void;
@@ -73,5 +68,5 @@ declare interface AxiosClient {
     off<EventName extends keyof RiotAPIAxiosEvent>(name: EventName, callback?: RiotAPIAxiosEvent[EventName]): void;
 }
 export { AxiosClient };
-export type { RiotAPIAxios, RiotAPIAxiosMethod, RiotAPIAxiosError, RiotAPIAxiosRequest, RiotAPIAxiosEvent };
+export type { RiotAPIAxios, RiotAPIAxiosMethod, RiotAPIAxiosRequest, RiotAPIAxiosEvent };
 //# sourceMappingURL=AxiosClient.d.ts.map
