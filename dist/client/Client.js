@@ -5,33 +5,46 @@ exports.RiotAPIClient = void 0;
 const lib_1 = require("@valapi/lib");
 const AccountV1_1 = require("../service/AccountV1");
 const ContentV1_1 = require("../service/ContentV1");
+const MatchV1_1 = require("../service/MatchV1");
+const RankedV1_1 = require("../service/RankedV1");
 const StatusV1_1 = require("../service/StatusV1");
-const AxiosClient_1 = require("./AxiosClient");
 //class
 /**
  * Official Api From Riot Games
  */
-class RiotAPIClient extends lib_1.CustomEvent {
+class RiotAPIClient extends lib_1.ValEvent {
     /**
+     * Class Constructor
      * @param {RiotAPIConfig} config Config
      */
     constructor(config) {
         super();
-        if (config.region === 'data') {
-            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: config.region });
-            config.region = 'na';
-        }
         //config
-        this.apiKey = config.apiKey;
         this.config = config;
         //first reload
+        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
+        if (new Date() >= this.expireAt) {
+            this.emit('expires', {
+                name: 'apiKey',
+                data: this.config.apiKey,
+            });
+        }
         this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
-        this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
-        this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
-        this.AxiosClient.on('request', ((data) => { this.emit('request', data); }));
-        this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
-        this.ContentV1 = new ContentV1_1.ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
-        this.StatusV1 = new StatusV1_1.StatusV1(this.AxiosClient, this.apiKey, this.RegionServices);
+        const _normalAxiosConfig = {
+            headers: {
+                'X-Riot-Token': `${this.config.apiKey}`,
+            },
+        };
+        this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
+        this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
+        this.RequestClient.on('request', ((data) => { this.emit('request', data); if (this.config.expiresIn) {
+            this.reload();
+        } }));
+        this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);
+        this.ContentV1 = new ContentV1_1.ContentV1(this.RequestClient, this.RegionServices);
+        this.MatchV1 = new MatchV1_1.MatchV1(this.RequestClient, this.RegionServices);
+        this.RankedV1 = new RankedV1_1.RankedV1(this.RequestClient, this.RegionServices);
+        this.StatusV1 = new StatusV1_1.StatusV1(this.RequestClient, this.RegionServices);
         //evet
         this.emit('ready');
     }
@@ -39,13 +52,29 @@ class RiotAPIClient extends lib_1.CustomEvent {
      * @returns {void}
      */
     reload() {
+        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
+        if (new Date() >= this.expireAt) {
+            this.emit('expires', {
+                name: 'apiKey',
+                data: this.config.apiKey,
+            });
+        }
         this.RegionServices = new lib_1.ValRegion(this.config.region).toJSON();
-        this.AxiosClient = new AxiosClient_1.AxiosClient(this.config.axiosConfig);
-        this.AxiosClient.on('error', ((data) => { this.emit('error', data); }));
-        this.AxiosClient.on('request', ((data) => { this.emit('request', data); }));
-        this.AccountV1 = new AccountV1_1.AccountV1(this.AxiosClient, this.apiKey, this.RegionServices);
-        this.ContentV1 = new ContentV1_1.ContentV1(this.AxiosClient, this.apiKey, this.RegionServices);
-        this.StatusV1 = new StatusV1_1.StatusV1(this.AxiosClient, this.apiKey, this.RegionServices);
+        const _normalAxiosConfig = {
+            headers: {
+                'X-Riot-Token': `${this.config.apiKey}`,
+            },
+        };
+        this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
+        this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
+        this.RequestClient.on('request', ((data) => { this.emit('request', data); if (this.config.expiresIn) {
+            this.reload();
+        } }));
+        this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);
+        this.ContentV1 = new ContentV1_1.ContentV1(this.RequestClient, this.RegionServices);
+        this.MatchV1 = new MatchV1_1.MatchV1(this.RequestClient, this.RegionServices);
+        this.RankedV1 = new RankedV1_1.RankedV1(this.RequestClient, this.RegionServices);
+        this.StatusV1 = new StatusV1_1.StatusV1(this.RequestClient, this.RegionServices);
         //event
         this.emit('ready');
     }
@@ -67,10 +96,6 @@ class RiotAPIClient extends lib_1.CustomEvent {
      */
     setRegion(region = 'na') {
         this.config.region = region;
-        if (region === 'data') {
-            this.emit('error', { errorCode: 'RiotAPI_Config_Error', message: 'Region Not Found', data: region });
-            region = 'na';
-        }
         this.emit('changeSettings', { name: 'Region', data: region });
         this.reload();
     }

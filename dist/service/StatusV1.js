@@ -14,22 +14,20 @@ exports.StatusV1 = void 0;
 //class
 class StatusV1 {
     /**
-     *
-     * @param AxiosClient Axios Client
-     * @param apiKey API Key
+     * Class Constructor
+     * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(AxiosClient, apiKey, Region) {
-        this.apiKey = apiKey;
+    constructor(RequestClient, Region) {
         this.region = Region;
-        this.AxiosClient = AxiosClient;
+        this.RequestClient = RequestClient;
     }
     /**
-     * @returns {Promise<RiotAPIAxios>}
+     * @returns {Promise<ValorantApiRequestResponse>}
      */
     PlatformData() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.AxiosClient.get(this.region.riot.server + `/val/status/v1/platform-data` + `?api_key=${this.apiKey}`);
+            return yield this.RequestClient.get(this.region.riot.server + `/val/status/v1/platform-data`);
         });
     }
 }

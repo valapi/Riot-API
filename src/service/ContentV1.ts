@@ -1,8 +1,6 @@
 //import
 
-import { AxiosClient, type RiotAPIAxios } from "../client/AxiosClient";
-
-import { type ValorantAPIRegion, Locale as _Locale } from "@valapi/lib";
+import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestResponse, Locale as _Locale } from "@valapi/lib";
 
 //interface
 
@@ -48,30 +46,26 @@ interface RiotAPIServiceContent {
 //class
 
 class ContentV1 {
-    private apiKey:string;
-    private region:ValorantAPIRegion;
-    private AxiosClient:AxiosClient;
+    private region:ValorantApiRegion;
+    private RequestClient:ValRequestClient;
 
     /**
-     * 
-     * @param AxiosClient Axios Client
-     * @param apiKey API Key
+     * Class Constructor
+     * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(AxiosClient:AxiosClient, apiKey:string, Region:ValorantAPIRegion) {
-        this.apiKey = apiKey;
+    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
         this.region = Region;
-
-        this.AxiosClient = AxiosClient;
+        this.RequestClient = RequestClient;
     }
 
     /**
      * 
      * @param {String} locale Locale
-     * @returns {Promise<RiotAPIAxios>}
+     * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async Contents(locale:keyof typeof _Locale.data = 'English_United_States'):Promise<RiotAPIAxios<RiotAPIServiceContent>> {
-        return await this.AxiosClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${_Locale.data[locale]}` + `&api_key=${this.apiKey}`);
+     public async Contents(locale:keyof typeof _Locale.to = 'English_United_States'):Promise<ValorantApiRequestResponse<RiotAPIServiceContent>> {
+        return await this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${_Locale.toString(locale)}`);
     }
 }
 

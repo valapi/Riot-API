@@ -1,8 +1,6 @@
 //import
 
-import { AxiosClient, type RiotAPIAxios } from "../client/AxiosClient";
-
-import type { ValorantAPIRegion } from "@valapi/lib";
+import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } from "@valapi/lib";
 
 //interface
 
@@ -52,28 +50,24 @@ interface RiotAPIServiceStatusPlatform {
 
 
 class StatusV1 {
-    private apiKey:string;
-    private region:ValorantAPIRegion;
-    private AxiosClient:AxiosClient;
+    private region:ValorantApiRegion;
+    private RequestClient:ValRequestClient;
 
     /**
-     * 
-     * @param AxiosClient Axios Client
-     * @param apiKey API Key
+     * Class Constructor
+     * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(AxiosClient:AxiosClient, apiKey:string, Region:ValorantAPIRegion) {
-        this.apiKey = apiKey;
+    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
         this.region = Region;
-
-        this.AxiosClient = AxiosClient;
+        this.RequestClient = RequestClient;
     }
 
     /**
-     * @returns {Promise<RiotAPIAxios>}
+     * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async PlatformData():Promise<RiotAPIAxios<RiotAPIServiceStatusPlatform>> {
-        return await this.AxiosClient.get(this.region.riot.server + `/val/status/v1/platform-data` + `?api_key=${this.apiKey}`);
+     public async PlatformData():Promise<ValorantApiRequestResponse<RiotAPIServiceStatusPlatform>> {
+        return await this.RequestClient.get(this.region.riot.server + `/val/status/v1/platform-data`);
     }
 }
 

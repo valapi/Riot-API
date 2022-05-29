@@ -15,24 +15,22 @@ const lib_1 = require("@valapi/lib");
 //class
 class ContentV1 {
     /**
-     *
-     * @param AxiosClient Axios Client
-     * @param apiKey API Key
+     * Class Constructor
+     * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(AxiosClient, apiKey, Region) {
-        this.apiKey = apiKey;
+    constructor(RequestClient, Region) {
         this.region = Region;
-        this.AxiosClient = AxiosClient;
+        this.RequestClient = RequestClient;
     }
     /**
      *
      * @param {String} locale Locale
-     * @returns {Promise<RiotAPIAxios>}
+     * @returns {Promise<ValorantApiRequestResponse>}
      */
     Contents(locale = 'English_United_States') {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.AxiosClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${lib_1.Locale.data[locale]}` + `&api_key=${this.apiKey}`);
+            return yield this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${lib_1.Locale.toString(locale)}`);
         });
     }
 }

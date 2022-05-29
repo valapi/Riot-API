@@ -1,5 +1,4 @@
-import { AxiosClient, type RiotAPIAxios } from "../client/AxiosClient";
-import { type ValorantAPIRegion, Locale as _Locale } from "@valapi/lib";
+import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestResponse, Locale as _Locale } from "@valapi/lib";
 interface RiotAPIServiceContentAct {
     name: string;
     localizedNames?: string;
@@ -34,22 +33,20 @@ interface RiotAPIServiceContent {
     [key: string]: any;
 }
 declare class ContentV1 {
-    private apiKey;
     private region;
-    private AxiosClient;
+    private RequestClient;
     /**
-     *
-     * @param AxiosClient Axios Client
-     * @param apiKey API Key
+     * Class Constructor
+     * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(AxiosClient: AxiosClient, apiKey: string, Region: ValorantAPIRegion);
+    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
      *
      * @param {String} locale Locale
-     * @returns {Promise<RiotAPIAxios>}
+     * @returns {Promise<ValorantApiRequestResponse>}
      */
-    Contents(locale?: keyof typeof _Locale.data): Promise<RiotAPIAxios<RiotAPIServiceContent>>;
+    Contents(locale?: keyof typeof _Locale.to): Promise<ValorantApiRequestResponse<RiotAPIServiceContent>>;
 }
 export { ContentV1 };
 export type { RiotAPIServiceContent, RiotAPIServiceContentItem, RiotAPIServiceContentAct };
