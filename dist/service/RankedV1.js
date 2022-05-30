@@ -25,8 +25,8 @@ class RankedV1 {
     /**
      *
      * @param {String} actId Act ID
-     * @param {Number} size Size
-     * @param {Number} startIndex Start Index
+     * @param {Number} size Size (default: 200)
+     * @param {Number} startIndex Start Index (default: 0)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
     LeaderboardsByAct(actId, size = 200, startIndex = 0) {

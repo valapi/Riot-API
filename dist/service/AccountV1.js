@@ -46,7 +46,7 @@ class AccountV1 {
     /**
      *
      * @param {String} puuid Player UUID
-     * @param {String} game Game
+     * @param {String} game Game (default: val)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
     ActiveShardsByGameAndPuuid(puuid, game = 'val') {

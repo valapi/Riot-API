@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContentV1 = void 0;
-const lib_1 = require("@valapi/lib");
 //class
 class ContentV1 {
     /**
@@ -25,12 +24,12 @@ class ContentV1 {
     }
     /**
      *
-     * @param {String} locale Locale
+     * @param {String} locale Locale (default: en-US)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-    Contents(locale = 'English_United_States') {
+    Contents(locale = 'en-US') {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${lib_1.Locale.toString(locale)}`);
+            return yield this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${locale}`);
         });
     }
 }

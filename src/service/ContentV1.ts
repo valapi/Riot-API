@@ -61,11 +61,11 @@ class ContentV1 {
 
     /**
      * 
-     * @param {String} locale Locale
+     * @param {String} locale Locale (default: en-US)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async Contents(locale:keyof typeof _Locale.to = 'English_United_States'):Promise<ValorantApiRequestResponse<RiotAPIServiceContent>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${_Locale.toString(locale)}`);
+     public async Contents(locale:keyof typeof _Locale.from = 'en-US'):Promise<ValorantApiRequestResponse<RiotAPIServiceContent>> {
+        return await this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${locale}`);
     }
 }
 

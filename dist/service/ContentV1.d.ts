@@ -43,10 +43,10 @@ declare class ContentV1 {
     constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
      *
-     * @param {String} locale Locale
+     * @param {String} locale Locale (default: en-US)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-    Contents(locale?: keyof typeof _Locale.to): Promise<ValorantApiRequestResponse<RiotAPIServiceContent>>;
+    Contents(locale?: keyof typeof _Locale.from): Promise<ValorantApiRequestResponse<RiotAPIServiceContent>>;
 }
 export { ContentV1 };
 export type { RiotAPIServiceContent, RiotAPIServiceContentItem, RiotAPIServiceContentAct };
