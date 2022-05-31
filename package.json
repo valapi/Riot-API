@@ -1,6 +1,6 @@
 {
   "name": "@valapi/riot-api",
-  "version": "1.2.0-beta.1",
+  "version": "1.2.0",
   "description": "Valorant API - Riot API",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
