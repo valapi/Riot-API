@@ -8,7 +8,7 @@ interface RiotAPIServiceStatusContent {
     locale: string;
     content: string;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 interface RiotAPIServiceStatusUpdate {
@@ -19,7 +19,7 @@ interface RiotAPIServiceStatusUpdate {
     created_at: string;
     updated_at: string;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 interface RiotAPIServiceStatusStatus {
@@ -33,7 +33,7 @@ interface RiotAPIServiceStatusStatus {
     updated_at: string;
     platforms: Array<string>;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 interface RiotAPIServiceStatusPlatform {
@@ -43,22 +43,22 @@ interface RiotAPIServiceStatusPlatform {
     maintenances: Array<RiotAPIServiceStatusStatus>;
     incidents: Array<RiotAPIServiceStatusStatus>;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 //class
 
 
 class StatusV1 {
-    private region:ValorantApiRegion;
-    private RequestClient:ValRequestClient;
+    private region: ValorantApiRegion;
+    private RequestClient: ValRequestClient;
 
     /**
      * Class Constructor
      * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
+    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
         this.region = Region;
         this.RequestClient = RequestClient;
     }
@@ -66,7 +66,7 @@ class StatusV1 {
     /**
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async PlatformData():Promise<ValorantApiRequestResponse<RiotAPIServiceStatusPlatform>> {
+    public async PlatformData(): Promise<ValorantApiRequestResponse<RiotAPIServiceStatusPlatform>> {
         return await this.RequestClient.get(this.region.riot.server + `/val/status/v1/platform-data`);
     }
 }

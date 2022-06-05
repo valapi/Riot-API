@@ -19,11 +19,11 @@ class RiotAPIClient extends lib_1.ValEvent {
      */
     constructor(config) {
         super();
+        this.createAt = new Date().getTime();
         //config
         this.config = config;
         //first reload
-        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
-        if (new Date() >= this.expireAt) {
+        if ((new Date().getTime()) >= (this.createAt + Number(this.config.expiresIn || 86400000))) {
             this.emit('expires', {
                 name: 'apiKey',
                 data: this.config.apiKey,
@@ -37,9 +37,7 @@ class RiotAPIClient extends lib_1.ValEvent {
         };
         this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
         this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
-        this.RequestClient.on('request', ((data) => { this.emit('request', data); if (this.config.expiresIn) {
-            this.reload();
-        } }));
+        this.RequestClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);
         this.ContentV1 = new ContentV1_1.ContentV1(this.RequestClient, this.RegionServices);
         this.MatchV1 = new MatchV1_1.MatchV1(this.RequestClient, this.RegionServices);
@@ -52,8 +50,7 @@ class RiotAPIClient extends lib_1.ValEvent {
      * @returns {void}
      */
     reload() {
-        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
-        if (new Date() >= this.expireAt) {
+        if ((new Date().getTime()) >= (this.createAt + Number(this.config.expiresIn || 86400000))) {
             this.emit('expires', {
                 name: 'apiKey',
                 data: this.config.apiKey,
@@ -67,9 +64,7 @@ class RiotAPIClient extends lib_1.ValEvent {
         };
         this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
         this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
-        this.RequestClient.on('request', ((data) => { this.emit('request', data); if (this.config.expiresIn) {
-            this.reload();
-        } }));
+        this.RequestClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);
         this.ContentV1 = new ContentV1_1.ContentV1(this.RequestClient, this.RegionServices);
         this.MatchV1 = new MatchV1_1.MatchV1(this.RequestClient, this.RegionServices);

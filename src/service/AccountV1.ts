@@ -5,11 +5,11 @@ import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } 
 //interface
 
 interface RiotAPIServiceAccount {
-    puuid:string;
-    gameName:string;
-    tagLine:string;
+    puuid: string;
+    gameName: string;
+    tagLine: string;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 type RiotAPIServiceAccountGameList = 'val' | 'lor';
@@ -17,15 +17,15 @@ type RiotAPIServiceAccountGameList = 'val' | 'lor';
 //class
 
 class AccountV1 {
-    private region:ValorantApiRegion;
-    private RequestClient:ValRequestClient;
+    private region: ValorantApiRegion;
+    private RequestClient: ValRequestClient;
 
     /**
      * Class Constructor
      * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
+    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
         this.region = Region;
         this.RequestClient = RequestClient;
     }
@@ -35,7 +35,7 @@ class AccountV1 {
      * @param {String} puuid Player UUID
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async ByPuuid(puuid:string):Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
+    public async ByPuuid(puuid: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
         return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-puuid/${puuid}`);
     }
 
@@ -45,7 +45,7 @@ class AccountV1 {
      * @param {String} tagLine In-Game Tag
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async ByRiotId(gameName:string, tagLine:string):Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
+    public async ByRiotId(gameName: string, tagLine: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
         return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
     }
 
@@ -55,7 +55,7 @@ class AccountV1 {
      * @param {String} game Game (default: val)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async ActiveShardsByGameAndPuuid(puuid:string, game:RiotAPIServiceAccountGameList = 'val'):Promise<ValorantApiRequestResponse<any>> {
+    public async ActiveShardsByGameAndPuuid(puuid: string, game: RiotAPIServiceAccountGameList = 'val'): Promise<ValorantApiRequestResponse<any>> {
         return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/active-shards/by-game/${game}/by-puuid/${puuid}`);
     }
 }

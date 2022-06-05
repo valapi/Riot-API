@@ -16,7 +16,7 @@ interface RiotAPIConfig {
  */
 declare class RiotAPIClient extends ValEvent {
     protected config: RiotAPIConfig;
-    expireAt: Date;
+    createAt: number;
     private RegionServices;
     private RequestClient;
     AccountV1: AccountV1;

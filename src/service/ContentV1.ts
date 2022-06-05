@@ -10,17 +10,17 @@ interface RiotAPIServiceContentAct {
     id: string;
     isActive: boolean;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 interface RiotAPIServiceContentItem {
     name: string;
-    localizedNames? : string;
+    localizedNames?: string;
     id: string;
     assetName: string;
     assetPath?: string;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 interface RiotAPIServiceContent {
@@ -40,21 +40,21 @@ interface RiotAPIServiceContent {
     playerTitles: Array<RiotAPIServiceContentItem>;
     acts: Array<RiotAPIServiceContentAct>;
 
-    [key:string]: any;
+    [key: string]: any;
 }
 
 //class
 
 class ContentV1 {
-    private region:ValorantApiRegion;
-    private RequestClient:ValRequestClient;
+    private region: ValorantApiRegion;
+    private RequestClient: ValRequestClient;
 
     /**
      * Class Constructor
      * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
+    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
         this.region = Region;
         this.RequestClient = RequestClient;
     }
@@ -64,7 +64,7 @@ class ContentV1 {
      * @param {String} locale Locale (default: en-US)
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async Contents(locale:keyof typeof _Locale.from = 'en-US'):Promise<ValorantApiRequestResponse<RiotAPIServiceContent>> {
+    public async Contents(locale: keyof typeof _Locale.from = 'en-US'): Promise<ValorantApiRequestResponse<RiotAPIServiceContent>> {
         return await this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${locale}`);
     }
 }

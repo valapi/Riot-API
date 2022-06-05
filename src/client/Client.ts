@@ -25,7 +25,7 @@ interface RiotAPIConfig {
  */
 class RiotAPIClient extends ValEvent {
     protected config: RiotAPIConfig;
-    public expireAt: Date;
+    public createAt: number;
 
     //reload
     private RegionServices: ValorantApiRegion;
@@ -41,15 +41,16 @@ class RiotAPIClient extends ValEvent {
      * Class Constructor
      * @param {RiotAPIConfig} config Config
      */
-     public constructor(config:RiotAPIConfig) {
+    public constructor(config: RiotAPIConfig) {
         super();
+
+        this.createAt = new Date().getTime();
 
         //config
         this.config = config;
 
         //first reload
-        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
-        if(new Date() >= this.expireAt){
+        if ((new Date().getTime()) >= (this.createAt + Number(this.config.expiresIn || 86400000))) {
             this.emit('expires', {
                 name: 'apiKey',
                 data: this.config.apiKey,
@@ -58,14 +59,14 @@ class RiotAPIClient extends ValEvent {
 
         this.RegionServices = new ValRegion(this.config.region).toJSON();
 
-        const _normalAxiosConfig:AxiosRequestConfig = {
+        const _normalAxiosConfig: AxiosRequestConfig = {
             headers: {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
         this.RequestClient = new ValRequestClient(new Object({ ..._normalAxiosConfig, ...this.config.axiosConfig }));
-        this.RequestClient.on('error', ((data:ValorantApiError) => { this.emit('error', data) }));
-        this.RequestClient.on('request', ((data:ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); if(this.config.expiresIn){ this.reload(); } }));
+        this.RequestClient.on('error', ((data: ValorantApiError) => { this.emit('error', data) }));
+        this.RequestClient.on('request', ((data: ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); }));
 
         this.AccountV1 = new AccountV1(this.RequestClient, this.RegionServices);
         this.ContentV1 = new ContentV1(this.RequestClient, this.RegionServices);
@@ -80,9 +81,8 @@ class RiotAPIClient extends ValEvent {
     /**
      * @returns {void}
      */
-     private reload():void {
-        this.expireAt = new Date(Date.now() + (this.config.expiresIn || 86400000));
-        if(new Date() >= this.expireAt){
+    private reload(): void {
+        if ((new Date().getTime()) >= (this.createAt + Number(this.config.expiresIn || 86400000))) {
             this.emit('expires', {
                 name: 'apiKey',
                 data: this.config.apiKey,
@@ -91,14 +91,14 @@ class RiotAPIClient extends ValEvent {
 
         this.RegionServices = new ValRegion(this.config.region).toJSON();
 
-        const _normalAxiosConfig:AxiosRequestConfig = {
+        const _normalAxiosConfig: AxiosRequestConfig = {
             headers: {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
         this.RequestClient = new ValRequestClient(new Object({ ..._normalAxiosConfig, ...this.config.axiosConfig }));
-        this.RequestClient.on('error', ((data:ValorantApiError) => { this.emit('error', data) }));
-        this.RequestClient.on('request', ((data:ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); if(this.config.expiresIn){ this.reload(); } }));
+        this.RequestClient.on('error', ((data: ValorantApiError) => { this.emit('error', data) }));
+        this.RequestClient.on('request', ((data: ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); }));
 
         this.AccountV1 = new AccountV1(this.RequestClient, this.RegionServices);
         this.ContentV1 = new ContentV1(this.RequestClient, this.RegionServices);
@@ -117,7 +117,7 @@ class RiotAPIClient extends ValEvent {
      * @param {String} apiKey IP of local api
      * @returns {void}
      */
-     public setApiKey(apiKey:string):void {
+    public setApiKey(apiKey: string): void {
         this.config.apiKey = apiKey;
 
         this.emit('changeSettings', { name: 'API_Key', data: apiKey });
@@ -129,7 +129,7 @@ class RiotAPIClient extends ValEvent {
      * @param {String} region Username
      * @returns {void}
      */
-     public setRegion(region:keyof typeof _Region.from = 'na'):void {
+    public setRegion(region: keyof typeof _Region.from = 'na'): void {
         this.config.region = region;
 
         this.emit('changeSettings', { name: 'Region', data: region });

@@ -12,15 +12,15 @@ import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestR
  * * Not For Public Use
  */
 class MatchV1 {
-    private region:ValorantApiRegion;
-    private RequestClient:ValRequestClient;
+    private region: ValorantApiRegion;
+    private RequestClient: ValRequestClient;
 
     /**
      * Class Constructor
      * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(RequestClient:ValRequestClient, Region:ValorantApiRegion) {
+    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
         this.region = Region;
         this.RequestClient = RequestClient;
     }
@@ -30,7 +30,7 @@ class MatchV1 {
      * @param {String} matchId Match ID
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async ByMatchId(matchId: string):Promise<ValorantApiRequestResponse<any>> {
+    public async ByMatchId(matchId: string): Promise<ValorantApiRequestResponse<any>> {
         return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/matches/${matchId}`);
     }
 
@@ -39,7 +39,7 @@ class MatchV1 {
      * @param {String} puuid Player UUID
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async ListByPuuid(puuid: string):Promise<ValorantApiRequestResponse<any>> {
+    public async ListByPuuid(puuid: string): Promise<ValorantApiRequestResponse<any>> {
         return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/matchlists/by-puuid/${puuid}`);
     }
 
@@ -48,7 +48,7 @@ class MatchV1 {
      * @param {String} queueId Queue ID
      * @returns {Promise<ValorantApiRequestResponse>}
      */
-     public async RecentByQueue(queueId: keyof typeof QueueId.from):Promise<ValorantApiRequestResponse<any>> {
+    public async RecentByQueue(queueId: keyof typeof QueueId.from): Promise<ValorantApiRequestResponse<any>> {
         return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/recent-matches/by-queue/${queueId}`);
     }
 }
