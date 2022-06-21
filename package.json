@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/valapi/Riot-API#readme",
   "dependencies": {
-    "@valapi/lib": "latest"
+    "@valapi/lib": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.45",
