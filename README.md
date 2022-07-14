@@ -4,7 +4,7 @@
   
 [![Profile](https://github.com/valapi/.github/blob/main/128_valapi.png?raw=true)](https://github.com/valapi)
   
-NodeJS package that make more easier to use Valorant API
+Official Api From Riot Games
   
 [![LICENSE](https://badgen.net/badge/license/MIT/blue)](https://github.com/valapi/.github/blob/main/LICENSE)
 [![Github](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/valapi)
@@ -20,4 +20,26 @@ NodeJS package that make more easier to use Valorant API
 
 ## Guide
 
-Full Guide: **[Click Here](https://valapi.github.io/docs/)**
+Full Guide: **[Click Here](https://valapi.github.io/docs/API/riot-api/Intro.html#contents)**
+
+```typescript
+import { Client } from '@valapi/riot-api';
+```
+
+### Client
+
+```typescript
+const ApiClient = new Client({
+    apiKey: 'LoooooongApiKey_123456789',
+    region: 'ap',
+});
+
+```
+
+### API
+
+```typescript
+const _data = await ApiClient.AccountV1.ByRiotId('PRX f0rsakeN', 'Huh');
+
+console.log(_data.data);
+```

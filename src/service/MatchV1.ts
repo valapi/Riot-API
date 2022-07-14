@@ -20,7 +20,7 @@ class MatchV1 {
      * @param RequestClient Axios Client
      * @param Region Region Service
      */
-    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
+    public constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
         this.region = Region;
         this.RequestClient = RequestClient;
     }

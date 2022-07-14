@@ -1,3 +1,13 @@
-export { RiotAPIClient as Client } from "./client/Client";
+//import
 
-export type { RiotAPIClientEvent, RiotAPIConfig } from "./client/Client";
+import {
+    RiotAPIClient as RiotAPI,
+} from "./client/Client";
+
+//export
+
+export {
+    RiotAPI as Client,
+};
+
+export default RiotAPI;

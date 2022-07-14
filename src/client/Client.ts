@@ -11,11 +11,30 @@ import { StatusV1 } from '../service/StatusV1';
 
 //interface
 
-interface RiotAPIConfig {
-    apiKey: string;
-    region: keyof typeof _Region.from;
-    expiresIn?: number;
-    axiosConfig?: AxiosRequestConfig;
+namespace RiotAPIClient {
+    export interface Config {
+        apiKey: string;
+        region: keyof typeof _Region.from;
+        expiresIn?: number;
+        axiosConfig?: AxiosRequestConfig;
+    }
+
+    export interface Event {
+        'ready': () => void;
+        'expires': (data: { name: string, data: any }) => void;
+        'request': (data: ValorantApiRequestData) => void;
+        'changeSettings': (data: { name: string, data: any }) => void;
+        'error': (data: ValorantApiError) => void;
+    }
+}
+
+//event
+
+declare interface RiotAPIClient {
+    emit<EventName extends keyof RiotAPIClient.Event>(name: EventName, ...args: Parameters<RiotAPIClient.Event[EventName]>): void;
+    on<EventName extends keyof RiotAPIClient.Event>(name: EventName, callback: RiotAPIClient.Event[EventName]): void;
+    once<EventName extends keyof RiotAPIClient.Event>(name: EventName, callback: RiotAPIClient.Event[EventName]): void;
+    off<EventName extends keyof RiotAPIClient.Event>(name: EventName, callback?: RiotAPIClient.Event[EventName]): void;
 }
 
 //class
@@ -24,7 +43,7 @@ interface RiotAPIConfig {
  * Official Api From Riot Games
  */
 class RiotAPIClient extends ValEvent {
-    protected config: RiotAPIConfig;
+    protected config: RiotAPIClient.Config;
     public createAt: number;
 
     //reload
@@ -39,9 +58,9 @@ class RiotAPIClient extends ValEvent {
 
     /**
      * Class Constructor
-     * @param {RiotAPIConfig} config Config
+     * @param {RiotAPIClient.Config} config Config
      */
-    public constructor(config: RiotAPIConfig) {
+    public constructor(config: RiotAPIClient.Config) {
         super();
 
         this.createAt = new Date().getTime();
@@ -110,7 +129,7 @@ class RiotAPIClient extends ValEvent {
         this.emit('ready');
     }
 
-    // SETTINGS //
+    //settings
 
     /**
      * 
@@ -137,22 +156,6 @@ class RiotAPIClient extends ValEvent {
     }
 }
 
-//event
-interface RiotAPIClientEvent {
-    'ready': () => void;
-    'expires': (data: { name: string, data: any }) => void;
-    'request': (data: ValorantApiRequestData) => void;
-    'changeSettings': (data: { name: string, data: any }) => void;
-    'error': (data: ValorantApiError) => void;
-}
-
-declare interface RiotAPIClient {
-    emit<EventName extends keyof RiotAPIClientEvent>(name: EventName, ...args: Parameters<RiotAPIClientEvent[EventName]>): void;
-    on<EventName extends keyof RiotAPIClientEvent>(name: EventName, callback: RiotAPIClientEvent[EventName]): void;
-    once<EventName extends keyof RiotAPIClientEvent>(name: EventName, callback: RiotAPIClientEvent[EventName]): void;
-    off<EventName extends keyof RiotAPIClientEvent>(name: EventName, callback?: RiotAPIClientEvent[EventName]): void;
-}
-
 //export
+
 export { RiotAPIClient };
-export type { RiotAPIConfig, RiotAPIClientEvent };
