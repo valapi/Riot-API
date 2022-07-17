@@ -1,52 +1,61 @@
 import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestResponse, Locale as _Locale } from "@valapi/lib";
-interface RiotAPIServiceContentAct {
+interface ActDto {
     name: string;
+    /**
+     * This field is excluded from the response when a locale is set
+     */
     localizedNames?: string;
     id: string;
     isActive: boolean;
     [key: string]: any;
 }
-interface RiotAPIServiceContentItem {
+interface ContentItemDto {
     name: string;
+    /**
+     * This field is excluded from the response when a locale is set
+     */
     localizedNames?: string;
     id: string;
     assetName: string;
+    /**
+     * This field is only included for maps and game modes. These values are used in the match response.
+     */
     assetPath?: string;
     [key: string]: any;
 }
-interface RiotAPIServiceContent {
+interface ContentDto {
     version: string;
-    characters: Array<RiotAPIServiceContentItem>;
-    maps: Array<RiotAPIServiceContentItem>;
-    chromas: Array<RiotAPIServiceContentItem>;
-    skins: Array<RiotAPIServiceContentItem>;
-    skinLevels: Array<RiotAPIServiceContentItem>;
-    equips: Array<RiotAPIServiceContentItem>;
-    gameModes: Array<RiotAPIServiceContentItem>;
-    sprays: Array<RiotAPIServiceContentItem>;
-    sprayLevels: Array<RiotAPIServiceContentItem>;
-    charms: Array<RiotAPIServiceContentItem>;
-    charmLevels: Array<RiotAPIServiceContentItem>;
-    playerCards: Array<RiotAPIServiceContentItem>;
-    playerTitles: Array<RiotAPIServiceContentItem>;
-    acts: Array<RiotAPIServiceContentAct>;
+    characters: Array<ContentItemDto>;
+    maps: Array<ContentItemDto>;
+    chromas: Array<ContentItemDto>;
+    skins: Array<ContentItemDto>;
+    skinLevels: Array<ContentItemDto>;
+    equips: Array<ContentItemDto>;
+    gameModes: Array<ContentItemDto>;
+    sprays: Array<ContentItemDto>;
+    sprayLevels: Array<ContentItemDto>;
+    charms: Array<ContentItemDto>;
+    charmLevels: Array<ContentItemDto>;
+    playerCards: Array<ContentItemDto>;
+    playerTitles: Array<ContentItemDto>;
+    acts: Array<ActDto>;
     [key: string]: any;
 }
 declare class ContentV1 {
-    private region;
     private RequestClient;
+    private Region;
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
+    constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
-     *
-     * @param {String} locale Locale (default: en-US)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get content optionally filtered by locale
+     * @param {string} locale Locale (default: en-US)
+     * @returns {Promise<ValorantApiRequestResponse<ContentDto>>}
      */
-    Contents(locale?: keyof typeof _Locale.from): Promise<ValorantApiRequestResponse<RiotAPIServiceContent>>;
+    Contents(locale?: keyof typeof _Locale.from): Promise<ValorantApiRequestResponse<ContentDto>>;
 }
 export { ContentV1 };
-export type { RiotAPIServiceContent, RiotAPIServiceContentItem, RiotAPIServiceContentAct };
+export type { ActDto, ContentItemDto, ContentDto };

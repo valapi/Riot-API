@@ -4,74 +4,87 @@ import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } 
 
 //interface
 
-interface RiotAPIServiceStatusContent {
+interface ContentDto {
     locale: string;
     content: string;
 
     [key: string]: any;
 }
 
-interface RiotAPIServiceStatusUpdate {
+interface UpdateDto {
     id: number;
     author: string;
+    publish: boolean;
+    /**
+     * (Legal values: riotclient, riotstatus, game)
+     */
     publish_locations: Array<string>;
-    translations: Array<RiotAPIServiceStatusContent>;
+    translations: Array<ContentDto>;
     created_at: string;
     updated_at: string;
 
     [key: string]: any;
 }
 
-interface RiotAPIServiceStatusStatus {
+interface StatusDto {
     id: number;
+    /**
+     * (Legal values: scheduled, in_progress, complete)
+     */
     maintenance_status: string;
+    /**
+     * (Legal values: info, warning, critical)
+     */
     incident_severity: string;
-    titles: Array<RiotAPIServiceStatusContent>;
-    updates: Array<RiotAPIServiceStatusUpdate>;
+    titles: Array<ContentDto>;
+    updates: Array<UpdateDto>;
     created_at: string;
     archive_at: string;
     updated_at: string;
+    /**
+     * (Legal values: windows, macos, android, ios, ps4, xbone, switch)
+     */
     platforms: Array<string>;
 
     [key: string]: any;
 }
 
-interface RiotAPIServiceStatusPlatform {
+interface PlatformDataDto {
     id: string;
     name: string;
     locales: Array<string>;
-    maintenances: Array<RiotAPIServiceStatusStatus>;
-    incidents: Array<RiotAPIServiceStatusStatus>;
+    maintenances: Array<StatusDto>;
+    incidents: Array<StatusDto>;
 
     [key: string]: any;
 }
 
-//class
-
+//service
 
 class StatusV1 {
-    private region: ValorantApiRegion;
     private RequestClient: ValRequestClient;
+    private Region: ValorantApiRegion;
 
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    public constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    public constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
 
     /**
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get VALORANT status for the given platform.
+     * @returns {Promise<ValorantApiRequestResponse<PlatformDataDto>>}
      */
-    public async PlatformData(): Promise<ValorantApiRequestResponse<RiotAPIServiceStatusPlatform>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/status/v1/platform-data`);
+    public async PlatformData(): Promise<ValorantApiRequestResponse<PlatformDataDto>> {
+        return await this.RequestClient.get(this.Region.riot.server + `/val/status/v1/platform-data`);
     }
 }
 
 //export
 
 export { StatusV1 };
-export type { RiotAPIServiceStatusContent, RiotAPIServiceStatusPlatform, RiotAPIServiceStatusStatus, RiotAPIServiceStatusUpdate };
+export type { ContentDto, UpdateDto, StatusDto, PlatformDataDto };

@@ -3,25 +3,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContentV1 = void 0;
 const tslib_1 = require("tslib");
-//class
+//service
 class ContentV1 {
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient, Region) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    constructor(ValRequestClient, Region) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
     /**
-     *
-     * @param {String} locale Locale (default: en-US)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get content optionally filtered by locale
+     * @param {string} locale Locale (default: en-US)
+     * @returns {Promise<ValorantApiRequestResponse<ContentDto>>}
      */
     Contents(locale = 'en-US') {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.RequestClient.get(this.region.riot.server + `/val/content/v1/contents?locale=${locale}`);
+            return yield this.RequestClient.get(this.Region.riot.server + `/val/content/v1/contents?locale=${locale}`);
         });
     }
 }

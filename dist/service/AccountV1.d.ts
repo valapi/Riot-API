@@ -1,40 +1,57 @@
 import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } from "@valapi/lib";
-interface RiotAPIServiceAccount {
+interface AccountDto {
     puuid: string;
-    gameName: string;
-    tagLine: string;
+    /**
+     * This field may be excluded from the response if the account doesn't have a gameName.
+     */
+    gameName?: string;
+    /**
+     * This field may be excluded from the response if the account doesn't have a tagLine.
+     */
+    tagLine?: string;
     [key: string]: any;
 }
-declare type RiotAPIServiceAccountGameList = 'val' | 'lor';
+interface ActiveShardDto {
+    puuid: string;
+    game: 'val' | 'lor';
+    activeShard: string;
+}
 declare class AccountV1 {
-    private region;
     private RequestClient;
+    private Region;
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
+    constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
-     *
-     * @param {String} puuid Player UUID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get account by puuid
+     * @param {string} puuid Player UUID
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
      */
-    ByPuuid(puuid: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>>;
+    ByPuuid(puuid: string): Promise<ValorantApiRequestResponse<AccountDto>>;
     /**
-     *
-     * @param {String} gameName In-Game Name
-     * @param {String} tagLine In-Game Tag
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get account by riot id
+     * @param {string} gameName In-Game Name
+     * @param {string} tagLine In-Game Tag
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
      */
-    ByRiotId(gameName: string, tagLine: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>>;
+    ByRiotId(gameName: string, tagLine: string): Promise<ValorantApiRequestResponse<AccountDto>>;
     /**
-     *
-     * @param {String} puuid Player UUID
-     * @param {String} game Game (default: val)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get active shard for a player
+     * @param {string} puuid Player UUID
+     * @param {string} game Game (default: val)
+     * @returns {Promise<ValorantApiRequestResponse<ActiveShardDto>>}
      */
-    ActiveShardsByGameAndPuuid(puuid: string, game?: RiotAPIServiceAccountGameList): Promise<ValorantApiRequestResponse<any>>;
+    ActiveShardsByGameAndPuuid(puuid: string, game?: 'val' | 'lor'): Promise<ValorantApiRequestResponse<ActiveShardDto>>;
+    /**
+     * Get account by access token
+     * * Not For Public Use
+     * @param {string} authorization (Header Parameters)
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
+     */
+    ByAccessToken(authorization: string): Promise<ValorantApiRequestResponse<AccountDto>>;
 }
 export { AccountV1 };
-export type { RiotAPIServiceAccount, RiotAPIServiceAccountGameList };
+export type { AccountDto, ActiveShardDto };

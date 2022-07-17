@@ -1,36 +1,55 @@
-import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestResponse } from "@valapi/lib";
-interface RiotAPIServiceRankedPlayer {
-    puuid: string;
-    gameName: string;
-    tagLine: string;
+import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } from "@valapi/lib";
+interface PlayerDto {
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    puuid?: string;
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    gameName?: string;
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    tagLine?: string;
     leaderboardRank: number;
     rankedRating: number;
     numberOfWins: number;
     [key: string]: any;
 }
-interface RiotAPIServiceRanked {
+interface LeaderboardDto {
+    /**
+     * The shard for the given leaderboard.
+     */
     shard: string;
+    /**
+     * The act id for the given leaderboard. Act ids can be found using the val-content API.
+     */
     actId: string;
+    /**
+     * The total number of players in the leaderboard.
+     */
     totalPlayers: number;
-    players: Array<RiotAPIServiceRankedPlayer>;
+    players: Array<PlayerDto>;
     [key: string]: any;
 }
 declare class RankedV1 {
-    private region;
     private RequestClient;
+    private Region;
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
+    constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
-     *
-     * @param {String} actId Act ID
-     * @param {Number} size Size (default: 200)
-     * @param {Number} startIndex Start Index (default: 0)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get leaderboard for the competitive queue
+     * @param {string} actId Act ID
+     * @param {number} size Size (default: 200)
+     * @param {number} startIndex Start Index (default: 0)
+     * @returns {Promise<ValorantApiRequestResponse<LeaderboardDto>>}
      */
-    LeaderboardsByAct(actId: string, size?: number, startIndex?: number): Promise<ValorantApiRequestResponse<RiotAPIServiceRanked>>;
+    LeaderboardsByAct(actId: string, size?: number, startIndex?: number): Promise<ValorantApiRequestResponse<LeaderboardDto>>;
 }
 export { RankedV1 };
+export type { PlayerDto, LeaderboardDto };

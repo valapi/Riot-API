@@ -35,7 +35,7 @@ class RiotAPIClient extends lib_1.ValEvent {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
-        this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
+        this.RequestClient = new lib_1.ValRequestClient(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig));
         this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
         this.RequestClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);
@@ -62,7 +62,7 @@ class RiotAPIClient extends lib_1.ValEvent {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
-        this.RequestClient = new lib_1.ValRequestClient(new Object(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig)));
+        this.RequestClient = new lib_1.ValRequestClient(Object.assign(Object.assign({}, _normalAxiosConfig), this.config.axiosConfig));
         this.RequestClient.on('error', ((data) => { this.emit('error', data); }));
         this.RequestClient.on('request', ((data) => { this.emit('request', data); }));
         this.AccountV1 = new AccountV1_1.AccountV1(this.RequestClient, this.RegionServices);

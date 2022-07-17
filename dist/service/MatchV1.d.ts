@@ -3,30 +3,30 @@ import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestR
  * * Not For Public Use
  */
 declare class MatchV1 {
-    private region;
     private RequestClient;
+    private Region;
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion);
+    constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion);
     /**
-     *
-     * @param {String} matchId Match ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get match by id
+     * @param {string} matchId Match ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     ByMatchId(matchId: string): Promise<ValorantApiRequestResponse<any>>;
     /**
-     *
-     * @param {String} puuid Player UUID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get matchlist for games played by puuid
+     * @param {string} puuid Player UUID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     ListByPuuid(puuid: string): Promise<ValorantApiRequestResponse<any>>;
     /**
-     *
-     * @param {String} queueId Queue ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get recent matches
+     * @param {string} queueId Queue ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     RecentByQueue(queueId: keyof typeof QueueId.from): Promise<ValorantApiRequestResponse<any>>;
 }

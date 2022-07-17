@@ -1,13 +1,22 @@
 //import
 
-import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestResponse, QueueId } from "@valapi/lib";
+import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } from "@valapi/lib";
 
 //interface
 
-interface RiotAPIServiceRankedPlayer {
-    puuid: string;
-    gameName: string;
-    tagLine: string;
+interface PlayerDto {
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    puuid?: string;
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    gameName?: string;
+    /**
+     * This field may be omitted if the player has been anonymized.
+     */
+    tagLine?: string;
     leaderboardRank: number;
     rankedRating: number;
     numberOfWins: number;
@@ -15,43 +24,53 @@ interface RiotAPIServiceRankedPlayer {
     [key: string]: any;
 }
 
-interface RiotAPIServiceRanked {
+interface LeaderboardDto {
+    /**
+     * The shard for the given leaderboard.
+     */
     shard: string;
+    /**
+     * The act id for the given leaderboard. Act ids can be found using the val-content API.
+     */
     actId: string;
+    /**
+     * The total number of players in the leaderboard.
+     */
     totalPlayers: number;
-    players: Array<RiotAPIServiceRankedPlayer>;
+    players: Array<PlayerDto>;
 
     [key: string]: any;
 }
 
-//class
+//service
 
 class RankedV1 {
-    private region: ValorantApiRegion;
     private RequestClient: ValRequestClient;
+    private Region: ValorantApiRegion;
 
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    public constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    public constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
 
     /**
-     * 
-     * @param {String} actId Act ID
-     * @param {Number} size Size (default: 200)
-     * @param {Number} startIndex Start Index (default: 0)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get leaderboard for the competitive queue
+     * @param {string} actId Act ID
+     * @param {number} size Size (default: 200)
+     * @param {number} startIndex Start Index (default: 0)
+     * @returns {Promise<ValorantApiRequestResponse<LeaderboardDto>>}
      */
-    public async LeaderboardsByAct(actId: string, size: number = 200, startIndex: number = 0): Promise<ValorantApiRequestResponse<RiotAPIServiceRanked>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/ranked/v1/leaderboards/by-act/${actId}?size=${size}&startIndex=${startIndex}`);
+    public async LeaderboardsByAct(actId: string, size: number = 200, startIndex: number = 0): Promise<ValorantApiRequestResponse<LeaderboardDto>> {
+        return await this.RequestClient.get(this.Region.riot.server + `/val/ranked/v1/leaderboards/by-act/${actId}?size=${size}&startIndex=${startIndex}`);
     }
 }
 
 //export
 
 export { RankedV1 };
+export type { PlayerDto, LeaderboardDto };

@@ -4,49 +4,49 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MatchV1 = void 0;
 const tslib_1 = require("tslib");
 //interface
-//i did know yet!
-//class
+//too hard.
+//service
 /**
  * * Not For Public Use
  */
 class MatchV1 {
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    constructor(RequestClient, Region) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    constructor(ValRequestClient, Region) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
     /**
-     *
-     * @param {String} matchId Match ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get match by id
+     * @param {string} matchId Match ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     ByMatchId(matchId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.RequestClient.get(this.region.riot.server + `/val/match/v1/matches/${matchId}`);
+            return yield this.RequestClient.get(this.Region.riot.server + `/val/match/v1/matches/${matchId}`);
         });
     }
     /**
-     *
-     * @param {String} puuid Player UUID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get matchlist for games played by puuid
+     * @param {string} puuid Player UUID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     ListByPuuid(puuid) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.RequestClient.get(this.region.riot.server + `/val/match/v1/matchlists/by-puuid/${puuid}`);
+            return yield this.RequestClient.get(this.Region.riot.server + `/val/match/v1/matchlists/by-puuid/${puuid}`);
         });
     }
     /**
-     *
-     * @param {String} queueId Queue ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get recent matches
+     * @param {string} queueId Queue ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     RecentByQueue(queueId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            return yield this.RequestClient.get(this.region.riot.server + `/val/match/v1/recent-matches/by-queue/${queueId}`);
+            return yield this.RequestClient.get(this.Region.riot.server + `/val/match/v1/recent-matches/by-queue/${queueId}`);
         });
     }
 }

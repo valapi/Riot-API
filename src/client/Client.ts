@@ -83,7 +83,7 @@ class RiotAPIClient extends ValEvent {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
-        this.RequestClient = new ValRequestClient(new Object({ ..._normalAxiosConfig, ...this.config.axiosConfig }));
+        this.RequestClient = new ValRequestClient({ ..._normalAxiosConfig, ...this.config.axiosConfig });
         this.RequestClient.on('error', ((data: ValorantApiError) => { this.emit('error', data) }));
         this.RequestClient.on('request', ((data: ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); }));
 
@@ -115,7 +115,7 @@ class RiotAPIClient extends ValEvent {
                 'X-Riot-Token': `${this.config.apiKey}`,
             },
         };
-        this.RequestClient = new ValRequestClient(new Object({ ..._normalAxiosConfig, ...this.config.axiosConfig }));
+        this.RequestClient = new ValRequestClient({ ..._normalAxiosConfig, ...this.config.axiosConfig });
         this.RequestClient.on('error', ((data: ValorantApiError) => { this.emit('error', data) }));
         this.RequestClient.on('request', ((data: ValorantApiRequestData) => { this.emit('request', data as ValorantApiRequestData); }));
 

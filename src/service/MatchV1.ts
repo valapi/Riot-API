@@ -4,52 +4,52 @@ import { type ValorantApiRegion, type ValRequestClient, type ValorantApiRequestR
 
 //interface
 
-//i did know yet!
+//too hard.
 
-//class
+//service
 
 /**
  * * Not For Public Use
  */
 class MatchV1 {
-    private region: ValorantApiRegion;
     private RequestClient: ValRequestClient;
+    private Region: ValorantApiRegion;
 
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    public constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    public constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
 
     /**
-     * 
-     * @param {String} matchId Match ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get match by id
+     * @param {string} matchId Match ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     public async ByMatchId(matchId: string): Promise<ValorantApiRequestResponse<any>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/matches/${matchId}`);
+        return await this.RequestClient.get(this.Region.riot.server + `/val/match/v1/matches/${matchId}`);
     }
 
     /**
-     * 
-     * @param {String} puuid Player UUID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get matchlist for games played by puuid
+     * @param {string} puuid Player UUID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     public async ListByPuuid(puuid: string): Promise<ValorantApiRequestResponse<any>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/matchlists/by-puuid/${puuid}`);
+        return await this.RequestClient.get(this.Region.riot.server + `/val/match/v1/matchlists/by-puuid/${puuid}`);
     }
 
     /**
-     * 
-     * @param {String} queueId Queue ID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get recent matches
+     * @param {string} queueId Queue ID
+     * @returns {Promise<ValorantApiRequestResponse<any>>}
      */
     public async RecentByQueue(queueId: keyof typeof QueueId.from): Promise<ValorantApiRequestResponse<any>> {
-        return await this.RequestClient.get(this.region.riot.server + `/val/match/v1/recent-matches/by-queue/${queueId}`);
+        return await this.RequestClient.get(this.Region.riot.server + `/val/match/v1/recent-matches/by-queue/${queueId}`);
     }
 }
 

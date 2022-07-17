@@ -4,63 +4,87 @@ import type { ValorantApiRegion, ValRequestClient, ValorantApiRequestResponse } 
 
 //interface
 
-interface RiotAPIServiceAccount {
+interface AccountDto {
     puuid: string;
-    gameName: string;
-    tagLine: string;
+    /**
+     * This field may be excluded from the response if the account doesn't have a gameName.
+     */
+    gameName?: string;
+    /**
+     * This field may be excluded from the response if the account doesn't have a tagLine.
+     */
+    tagLine?: string;
 
     [key: string]: any;
 }
 
-type RiotAPIServiceAccountGameList = 'val' | 'lor';
+interface ActiveShardDto {
+    puuid: string;
+    game: 'val' | 'lor';
+    activeShard: string;
+}
 
-//class
+//service
 
 class AccountV1 {
-    private region: ValorantApiRegion;
     private RequestClient: ValRequestClient;
+    private Region: ValorantApiRegion;
 
     /**
      * Class Constructor
-     * @param RequestClient Axios Client
-     * @param Region Region Service
+     * @param {ValRequestClient} ValRequestClient Request Client
+     * @param {ValorantApiRegion} Region Region Service Data
      */
-    public constructor(RequestClient: ValRequestClient, Region: ValorantApiRegion) {
-        this.region = Region;
-        this.RequestClient = RequestClient;
+    public constructor(ValRequestClient: ValRequestClient, Region: ValorantApiRegion) {
+        this.RequestClient = ValRequestClient;
+        this.Region = Region;
     }
 
     /**
-     * 
-     * @param {String} puuid Player UUID
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get account by puuid
+     * @param {string} puuid Player UUID
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
      */
-    public async ByPuuid(puuid: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
-        return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-puuid/${puuid}`);
+    public async ByPuuid(puuid: string): Promise<ValorantApiRequestResponse<AccountDto>> {
+        return await this.RequestClient.get(this.Region.riot.api + `/riot/account/v1/accounts/by-puuid/${puuid}`);
     }
 
     /**
-     * 
-     * @param {String} gameName In-Game Name
-     * @param {String} tagLine In-Game Tag
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get account by riot id
+     * @param {string} gameName In-Game Name
+     * @param {string} tagLine In-Game Tag
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
      */
-    public async ByRiotId(gameName: string, tagLine: string): Promise<ValorantApiRequestResponse<RiotAPIServiceAccount>> {
-        return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
+    public async ByRiotId(gameName: string, tagLine: string): Promise<ValorantApiRequestResponse<AccountDto>> {
+        return await this.RequestClient.get(this.Region.riot.api + `/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`);
     }
 
     /**
-     * 
-     * @param {String} puuid Player UUID
-     * @param {String} game Game (default: val)
-     * @returns {Promise<ValorantApiRequestResponse>}
+     * Get active shard for a player
+     * @param {string} puuid Player UUID
+     * @param {string} game Game (default: val)
+     * @returns {Promise<ValorantApiRequestResponse<ActiveShardDto>>}
      */
-    public async ActiveShardsByGameAndPuuid(puuid: string, game: RiotAPIServiceAccountGameList = 'val'): Promise<ValorantApiRequestResponse<any>> {
-        return await this.RequestClient.get(this.region.riot.api + `/riot/account/v1/active-shards/by-game/${game}/by-puuid/${puuid}`);
+    public async ActiveShardsByGameAndPuuid(puuid: string, game: 'val' | 'lor' = 'val'): Promise<ValorantApiRequestResponse<ActiveShardDto>> {
+        return await this.RequestClient.get(this.Region.riot.api + `/riot/account/v1/active-shards/by-game/${game}/by-puuid/${puuid}`);
+    }
+
+    /**
+     * Get account by access token
+     * * Not For Public Use
+     * @param {string} authorization (Header Parameters)
+     * @returns {Promise<ValorantApiRequestResponse<AccountDto>>}
+     */
+    public async ByAccessToken(authorization: string): Promise<ValorantApiRequestResponse<AccountDto>> {
+        return await this.RequestClient.get(this.Region.riot.api + `/riot/account/v1/accounts/me`, {
+            headers: {
+                'Authorization': `${authorization}`
+            }
+        });
     }
 }
 
 //export
 
 export { AccountV1 };
-export type { RiotAPIServiceAccount, RiotAPIServiceAccountGameList };
+export type { AccountDto, ActiveShardDto };
